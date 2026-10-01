@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My PC Apps</title>
+<meta name="description" content="Meine persönliche Liste für wichtige PC-Apps und Downloads.">
+
+<style>
+:root{
+  --bg:#080b12;
+  --panel:#111622;
+  --text:#f4f7fb;
+  --muted:#9aa6b8;
+  --accent:#6d5dfc;
+  --border:#252d3d;
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  font-family:Inter,Segoe UI,Arial,sans-serif;
+  background:radial-gradient(circle at top,#17152f 0,#080b12 38%);
+  color:var(--text);
+}
+
+header{
+  padding:58px 20px 36px;
+  text-align:center;
+}
+
+.badge{
+  display:inline-block;
+  padding:7px 12px;
+  border:1px solid var(--border);
+  border-radius:999px;
+  background:#101522;
+  color:#aeb8ca;
+  font-size:13px;
+}
+
+h1{
+  font-size:clamp(38px,7vw,72px);
+  margin:16px 0 8px;
+  letter-spacing:-3px;
+}
+
+.hero{
+  max-width:760px;
+  margin:auto;
+  color:var(--muted);
+  font-size:17px;
+  line-height:1.6;
+}
+
+.wrap{
+  max-width:1180px;
+  margin:auto;
+  padding:0 20px 60px;
+}
+
+.toolbar{
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+  margin:20px 0 30px;
+}
+
+input{
+  flex:1;
+  min-width:220px;
+  background:var(--panel);
+  border:1px solid var(--border);
+  color:var(--text);
+  padding:14px 16px;
+  border-radius:12px;
+  font-size:15px;
+  outline:none;
+}
+
+input:focus{
+  border-color:var(--accent);
+}
+
+.filters{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+.filter,
+.fav-toggle{
+  border:1px solid var(--border);
+  background:var(--panel);
+  color:var(--muted);
+  padding:11px 14px;
+  border-radius:10px;
+  cursor:pointer;
+}
+
+.filter.active,
+.filter:hover{
+  background:var(--accent);
+  color:white;
+  border-color:var(--accent);
+}
+
+.fav-toggle.active,
+.fav-toggle:hover{
+  background:#c59b00;
+  color:white;
+  border-color:#c59b00;
+}
+
+.stats{
+  color:var(--muted);
+  margin:0 0 18px;
+  font-size:14px;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:16px;
+}
+
+.card{
+  background:linear-gradient(145deg,var(--panel),#0e131d);
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:20px;
+  display:flex;
+  flex-direction:column;
+  min-height:225px;
+  transition:.2s;
+}
+
+.card:hover{
+  transform:translateY(-3px);
+  border-color:#3b4560;
+  box-shadow:0 12px 35px #0005;
+}
+
+.icon{
+  font-size:34px;
+}
+
+.top{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+}
+
+.num{
+  font-size:12px;
+  color:#667186;
+}
+
+.star{
+  border:0;
+  background:transparent;
+  color:#ffd34e;
+  font-size:20px;
+  cursor:pointer;
+  padding:0 0 0 5px;
+}
+
+.card h2{
+  font-size:20px;
+  margin:14px 0 7px;
+}
+
+.card p{
+  color:var(--muted);
+  line-height:1.45;
+  margin:0 0 18px;
+  flex:1;
+}
+
+.tag{
+  font-size:12px;
+  color:#b8c2d4;
+  margin-bottom:14px;
+}
+
+.btn{
+  display:block;
+  text-align:center;
+  text-decoration:none;
+  background:var(--accent);
+  color:white;
+  padding:12px;
+  border-radius:11px;
+  font-weight:700;
+}
+
+.btn:hover{
+  filter:brightness(1.12);
+}
+
+.empty{
+  text-align:center;
+  color:var(--muted);
+  padding:50px;
+  display:none;
+}
+
+footer{
+  text-align:center;
+  color:#687489;
+  border-top:1px solid var(--border);
+  padding:28px 20px;
+  font-size:13px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <span class="badge">🖥️ Meine PC-Apps</span>
+
+  <h1>My PC Apps</h1>
+
+  <p class="hero">
+    Meine persönliche Sammlung wichtiger Gaming-, Performance-,
+    Entwicklungs- und Alltags-Apps – mit direkten Links zu den
+    offiziellen Downloads.
+  </p>
+</header>
+
+<main class="wrap">
+
+  <div class="toolbar">
+
+    <input
+      id="search"
+      type="search"
+      placeholder="🔎 App suchen …"
+      aria-label="App suchen"
+    >
+
+    <div class="filters" id="filters"></div>
+
+    <button class="fav-toggle" id="favToggle">
+      ⭐ Favoriten
+    </button>
+
+  </div>
+
+  <div class="stats" id="stats"></div>
+
+  <section class="grid" id="grid"></section>
+
+  <div class="empty" id="empty">
+    Keine App gefunden.
+  </div>
+
+</main>
+
+<footer>
+  Links führen möglichst direkt zu den offiziellen Download-Seiten
+  der jeweiligen Anbieter.
+</footer>
+
+<script>
+
+const apps = [
+
+{n:1,name:"Steam",icon:"🎮",cat:"Gaming",desc:"Spiele kaufen, installieren, verwalten und online spielen.",url:"https://store.steampowered.com/about/"},
+
+{n:2,name:"Lively Wallpaper",icon:"🌌",cat:"Desktop",desc:"Animierte und interaktive Hintergrundbilder für Windows.",url:"https://livelywallpaper.app/de/download/"},
+
+{n:3,name:"LSC Smart Connect",icon:"💡",cat:"Smart Home",desc:"App zur Steuerung kompatibler LSC-Smart-Home-Geräte.",url:"https://play.google.com/store/apps/details?id=com.lscsmartconnection.smart"},
+
+{n:4,name:"Akko Hub",icon:"⌨️",cat:"Hardware",desc:"Konfiguration kompatibler Akko-Tastaturen.",url:"https://en.akkogear.com/download/"},
+
+{n:5,name:"Minecraft + LabyMod",icon:"⛏️",cat:"Gaming",desc:"Minecraft mit LabyMod für ein erweitertes Spielerlebnis.",url:"https://www.labymod.net/de/download"},
+
+{n:6,name:"Roblox",icon:"🎮",cat:"Gaming",desc:"Gaming-Plattform mit Millionen von Community-Erlebnissen.",url:"https://www.roblox.com/download"},
+
+{n:7,name:"Discord",icon:"💬",cat:"Kommunikation",desc:"Chat, Sprachkanäle und Communitys.",url:"https://discord.com/download"},
+
+{n:8,name:"Opera GX",icon:"🌐",cat:"Browser",desc:"Gaming-orientierter Webbrowser.",url:"https://www.opera.com/gx"},
+
+{n:9,name:"Node.js",icon:"🟢",cat:"Entwicklung",desc:"JavaScript-Laufzeitumgebung.",url:"https://nodejs.org/en/download"},
+
+{n:10,name:"Microsoft PC Manager",icon:"⚡",cat:"Performance",desc:"Windows-Tool für Wartung und Systemverwaltung.",url:"https://pcmanager.microsoft.com/"},
+
+{n:11,name:"7-Zip",icon:"📦",cat:"Tools",desc:"Archivprogramm für ZIP, 7z und viele weitere Formate.",url:"https://www.7-zip.org/download.html"},
+
+{n:12,name:"OBS Studio",icon:"🎥",cat:"Streaming",desc:"Bildschirmaufnahme und Streaming.",url:"https://obsproject.com/download"},
+
+{n:13,name:"VLC Media Player",icon:"🎬",cat:"Media",desc:"Player für Videos, Musik und viele Formate.",url:"https://www.videolan.org/vlc/download-windows.html"},
+
+{n:14,name:"Visual Studio Code",icon:"💻",cat:"Entwicklung",desc:"Schneller, vielseitiger Code-Editor.",url:"https://code.visualstudio.com/download"},
+
+{n:15,name:"Everything",icon:"🔍",cat:"Tools",desc:"Extrem schnelle Dateisuche für Windows.",url:"https://www.voidtools.com/downloads/"},
+
+{n:16,name:"ShareX",icon:"📸",cat:"Tools",desc:"Screenshots und Bildschirmaufnahmen.",url:"https://getsharex.com/downloads/"},
+
+{n:17,name:"Firefox",icon:"🦊",cat:"Browser",desc:"Freier Webbrowser von Mozilla.",url:"https://www.mozilla.org/firefox/new/"},
+
+{n:18,name:"CrystalDiskInfo",icon:"💾",cat:"Performance",desc:"SSD- und Festplattenzustand prüfen.",url:"https://crystalmark.info/en/software/crystaldiskinfo/"},
+
+{n:19,name:"EarTrumpet",icon:"🎧",cat:"Tools",desc:"Lautstärke pro App steuern.",url:"https://apps.microsoft.com/detail/9nblggh516xp"},
+
+{n:20,name:"GPU-Z",icon:"🖥️",cat:"Performance",desc:"Grafikkarten- und GPU-Informationen.",url:"https://www.techpowerup.com/gpuz/"},
+
+{n:21,name:"Epic Games Launcher",icon:"🎮",cat:"Gaming",desc:"Spiele und Store von Epic Games.",url:"https://store.epicgames.com/download"},
+
+{n:22,name:"GOG Galaxy",icon:"🎮",cat:"Gaming",desc:"Launcher für GOG und weitere Spielebibliotheken.",url:"https://www.gog.com/galaxy"},
+
+{n:23,name:"Ubisoft Connect",icon:"🎮",cat:"Gaming",desc:"Ubisoft-Spiele und Services.",url:"https://ubisoftconnect.com/"},
+
+{n:24,name:"EA app",icon:"🎮",cat:"Gaming",desc:"Launcher für EA-Spiele.",url:"https://www.ea.com/ea-app"},
+
+{n:25,name:"Battle.net",icon:"🎮",cat:"Gaming",desc:"Launcher für Blizzard-Spiele.",url:"https://download.battle.net/"},
+
+{n:26,name:"Xbox App",icon:"🎮",cat:"Gaming",desc:"Xbox-Spiele und PC Game Pass.",url:"https://www.xbox.com/apps/xbox-app-for-pc"},
+
+{n:27,name:"NVIDIA App",icon:"🟩",cat:"Gaming",desc:"Treiber, Einstellungen und NVIDIA-Funktionen.",url:"https://www.nvidia.com/en-us/software/nvidia-app/"},
+
+{n:28,name:"AMD Software: Adrenalin Edition",icon:"🔴",cat:"Gaming",desc:"AMD-Grafiktreiber und Einstellungen.",url:"https://www.amd.com/en/products/software/adrenalin.html"},
+
+{n:29,name:"Intel Driver & Support Assistant",icon:"🔵",cat:"Hardware",desc:"Intel-Treiber automatisch finden.",url:"https://www.intel.com/content/www/us/en/support/detect.html"},
+
+{n:30,name:"Riot Client",icon:"🎮",cat:"Gaming",desc:"Launcher für Riot-Spiele.",url:"https://www.riotgames.com/"},
+
+{n:31,name:"Playnite",icon:"🎮",cat:"Gaming",desc:"Open-Source-Spielebibliothek und Launcher.",url:"https://playnite.link/"},
+
+{n:32,name:"Moonlight",icon:"🌙",cat:"Gaming",desc:"Game-Streaming-Client.",url:"https://moonlight-stream.org/"},
+
+{n:33,name:"Parsec",icon:"🕹️",cat:"Gaming",desc:"Remote-Gaming und Desktop-Zugriff.",url:"https://parsec.app/downloads"},
+
+{n:34,name:"DS4Windows",icon:"🎮",cat:"Gaming",desc:"Controller-Unterstützung für Windows.",url:"https://ds4-windows.com/"},
+
+{n:35,name:"JoyToKey",icon:"🎮",cat:"Gaming",desc:"Controller-Tasten auf Tastatur/Maus abbilden.",url:"https://joytokey.net/en/"},
+
+{n:36,name:"HandBrake",icon:"🎞️",cat:"Media",desc:"Videos konvertieren und komprimieren.",url:"https://handbrake.fr/downloads.php"},
+
+{n:37,name:"Audacity",icon:"🎙️",cat:"Media",desc:"Audio aufnehmen und bearbeiten.",url:"https://www.audacityteam.org/download/"},
+
+{n:38,name:"GIMP",icon:"🖼️",cat:"Kreativ",desc:"Bildbearbeitung.",url:"https://www.gimp.org/downloads/"},
+
+{n:39,name:"Krita",icon:"🎨",cat:"Kreativ",desc:"Digitales Zeichnen und Malen.",url:"https://krita.org/en/download/krita-desktop/"},
+
+{n:40,name:"Blender",icon:"🧊",cat:"Kreativ",desc:"3D-Modellierung, Animation und Rendering.",url:"https://www.blender.org/download/"},
+
+{n:41,name:"Inkscape",icon:"✏️",cat:"Kreativ",desc:"Vektor-Grafikprogramm.",url:"https://inkscape.org/release/"},
+
+{n:42,name:"DaVinci Resolve",icon:"🎬",cat:"Kreativ",desc:"Videoschnitt, Color Grading und Audio.",url:"https://www.blackmagicdesign.com/products/davinciresolve"},
+
+{n:43,name:"Paint.NET",icon:"🖌️",cat:"Kreativ",desc:"Einfaches Bildbearbeitungsprogramm.",url:"https://www.getpaint.net/download.html"},
+
+{n:44,name:"OBS StreamFX",icon:"✨",cat:"Streaming",desc:"Erweiterungen für OBS Studio.",url:"https://github.com/Xaymar/obs-StreamFX"},
+
+{n:45,name:"HandBrake Nightly",icon:"🌙",cat:"Media",desc:"Aktuelle Testversionen von HandBrake.",url:"https://handbrake.fr/nightly.php"},
+
+{n:46,name:"Spotify",icon:"🎵",cat:"Media",desc:"Musik, Podcasts und mehr.",url:"https://www.spotify.com/download/windows/"},
+
+{n:47,name:"WhatsApp",icon:"💬",cat:"Kommunikation",desc:"Messenger für PC und Smartphone.",url:"https://www.whatsapp.com/download"},
+
+{n:48,name:"Telegram",icon:"✈️",cat:"Kommunikation",desc:"Schneller Messenger mit Desktop-App.",url:"https://desktop.telegram.org/"},
+
+{n:49,name:"Signal",icon:"🔒",cat:"Kommunikation",desc:"Privater Messenger.",url:"https://signal.org/download/"},
+
+{n:50,name:"Zoom",icon:"📹",cat:"Kommunikation",desc:"Video-Konferenzen und Meetings.",url:"https://zoom.us/download"},
+
+{n:51,name:"Microsoft Teams",icon:"👥",cat:"Kommunikation",desc:"Chat, Meetings und Zusammenarbeit.",url:"https://www.microsoft.com/microsoft-teams/download-app"},
+
+{n:52,name:"Notepad++",icon:"📝",cat:"Entwicklung",desc:"Leistungsfähiger Text- und Code-Editor.",url:"https://notepad-plus-plus.org/downloads/"},
+
+{n:53,name:"Git",icon:"🌿",cat:"Entwicklung",desc:"Versionsverwaltung für Entwickler.",url:"https://git-scm.com/downloads"},
+
+{n:54,name:"GitHub Desktop",icon:"🐙",cat:"Entwicklung",desc:"GitHub und Git einfach verwalten.",url:"https://desktop.github.com/"},
+
+{n:55,name:"Python",icon:"🐍",cat:"Entwicklung",desc:"Programmiersprache und Laufzeitumgebung.",url:"https://www.python.org/downloads/"},
+
+{n:56,name:"Postman",icon:"📬",cat:"Entwicklung",desc:"APIs testen und entwickeln.",url:"https://www.postman.com/downloads/"},
+
+{n:57,name:"Docker Desktop",icon:"🐳",cat:"Entwicklung",desc:"Container und Entwicklungsumgebungen.",url:"https://www.docker.com/products/docker-desktop/"},
+
+{n:58,name:"JetBrains Toolbox",icon:"🧰",cat:"Entwicklung",desc:"Manager für JetBrains-IDEs.",url:"https://www.jetbrains.com/toolbox-app/"},
+
+{n:59,name:"Visual Studio",icon:"🟣",cat:"Entwicklung",desc:"Komplette Entwicklungsumgebung von Microsoft.",url:"https://visualstudio.microsoft.com/downloads/"},
+
+{n:60,name:"Android Studio",icon:"🤖",cat:"Entwicklung",desc:"Entwicklungsumgebung für Android.",url:"https://developer.android.com/studio"},
+
+{n:61,name:"Microsoft Edge",icon:"🌐",cat:"Browser",desc:"Webbrowser von Microsoft.",url:"https://www.microsoft.com/edge/download"},
+
+{n:62,name:"Firefox Developer Edition",icon:"🦊",cat:"Browser",desc:"Firefox-Version für Entwickler.",url:"https://www.mozilla.org/firefox/developer/"},
+
+{n:63,name:"Tor Browser",icon:"🧅",cat:"Browser",desc:"Browser für anonymisiertes Surfen mit Tor.",url:"https://www.torproject.org/download/"},
+
+{n:64,name:"qBittorrent",icon:"⬇️",cat:"Tools",desc:"Open-Source-BitTorrent-Client.",url:"https://www.qbittorrent.org/download"},
+
+{n:65,name:"PowerToys",icon:"🪄",cat:"Windows",desc:"Praktische Windows-Erweiterungen von Microsoft.",url:"https://learn.microsoft.com/windows/powertoys/"},
+
+{n:66,name:"Windows Terminal",icon:"⌨️",cat:"Windows",desc:"Moderne Terminal-App für Windows.",url:"https://apps.microsoft.com/detail/9n0dx20hk701"},
+
+{n:67,name:"Autoruns",icon:"🚀",cat:"Windows",desc:"Autostart-Einträge analysieren.",url:"https://learn.microsoft.com/sysinternals/downloads/autoruns"},
+
+{n:68,name:"Process Explorer",icon:"🔬",cat:"Windows",desc:"Detaillierte Prozessverwaltung.",url:"https://learn.microsoft.com/sysinternals/downloads/process-explorer"},
+
+{n:69,name:"Process Monitor",icon:"🔎",cat:"Windows",desc:"Systemaktivitäten überwachen.",url:"https://learn.microsoft.com/sysinternals/downloads/procmon"},
+
+{n:70,name:"TreeSize Free",icon:"🌳",cat:"Tools",desc:"Speicherplatz analysieren.",url:"https://www.jam-software.com/treesize_free"},
+
+{n:71,name:"WizTree",icon:"🌲",cat:"Tools",desc:"Sehr schnelle Speicherplatzanalyse.",url:"https://diskanalyzer.com/"},
+
+{n:72,name:"Revo Uninstaller Free",icon:"🧹",cat:"Tools",desc:"Programme gründlich deinstallieren.",url:"https://www.revouninstaller.com/products/revo-uninstaller-free/"},
+
+{n:73,name:"EverythingToolbar",icon:"🔎",cat:"Tools",desc:"Everything-Suche direkt in der Windows-Taskleiste.",url:"https://github.com/srwi/EverythingToolbar"},
+
+{n:74,name:"Bulk Crap Uninstaller",icon:"🧹",cat:"Tools",desc:"Viele Programme effizient deinstallieren.",url:"https://www.bcuninstaller.com/"},
+
+{n:75,name:"BleachBit",icon:"🧽",cat:"Tools",desc:"Temporäre Dateien und Daten bereinigen.",url:"https://www.bleachbit.org/download"},
+
+{n:76,name:"WinDirStat",icon:"📊",cat:"Tools",desc:"Speicherplatz grafisch analysieren.",url:"https://windirstat.net/download.html"},
+
+{n:77,name:"PeaZip",icon:"📦",cat:"Tools",desc:"Open-Source-Archivmanager.",url:"https://peazip.github.io/"},
+
+{n:78,name:"Rufus",icon:"💿",cat:"Tools",desc:"Bootfähige USB-Laufwerke erstellen.",url:"https://rufus.ie/"},
+
+{n:79,name:"Ventoy",icon:"💿",cat:"Tools",desc:"Mehrere ISO-Dateien von einem USB-Stick booten.",url:"https://www.ventoy.net/en/download.html"},
+
+{n:80,name:"HWiNFO",icon:"📊",cat:"Hardware",desc:"Detaillierte Hardware-Analyse.",url:"https://www.hwinfo.com/download/"},
+
+{n:81,name:"CPU-Z",icon:"🧠",cat:"Hardware",desc:"CPU-, Mainboard- und RAM-Informationen.",url:"https://www.cpuid.com/softwares/cpu-z.html"},
+
+{n:82,name:"Core Temp",icon:"🌡️",cat:"Hardware",desc:"CPU-Temperaturen überwachen.",url:"https://www.alcpu.com/CoreTemp/"},
+
+{n:83,name:"MSI Afterburner",icon:"📈",cat:"Hardware",desc:"GPU-Überwachung und Tuning.",url:"https://www.msi.com/Landing/afterburner/graphics-cards"},
+
+{n:84,name:"Fan Control",icon:"🌀",cat:"Hardware",desc:"Lüftersteuerung unter Windows.",url:"https://github.com/Rem0o/FanControl.Releases"},
+
+{n:85,name:"OpenRGB",icon:"🌈",cat:"Hardware",desc:"RGB-Beleuchtung verschiedener Geräte verwalten.",url:"https://openrgb.org/"},
+
+{n:86,name:"SignalRGB",icon:"🌈",cat:"Hardware",desc:"RGB-Beleuchtung zentral steuern.",url:"https://signalrgb.com/"},
+
+{n:87,name:"Logitech G HUB",icon:"🖱️",cat:"Hardware",desc:"Logitech-Gaming-Geräte konfigurieren.",url:"https://www.logitechg.com/ghub"},
+
+{n:88,name:"Razer Synapse",icon:"🐍",cat:"Hardware",desc:"Razer-Geräte konfigurieren.",url:"https://www.razer.com/synapse-3"},
+
+{n:89,name:"SteelSeries GG",icon:"🎧",cat:"Hardware",desc:"SteelSeries-Geräte und Sonar konfigurieren.",url:"https://steelseries.com/gg"},
+
+{n:90,name:"Corsair iCUE",icon:"💡",cat:"Hardware",desc:"Corsair-Hardware und RGB verwalten.",url:"https://www.corsair.com/us/en/s/icue"},
+
+{n:91,name:"Samsung Magician",icon:"💾",cat:"Performance",desc:"Samsung-SSDs verwalten und prüfen.",url:"https://semiconductor.samsung.com/consumer-storage/support/tools/"},
+
+{n:92,name:"WD Dashboard",icon:"💾",cat:"Performance",desc:"Western-Digital-Laufwerke verwalten.",url:"https://support-en.wd.com/app/products/downloads"},
+
+{n:93,name:"SeaTools",icon:"💾",cat:"Performance",desc:"Festplatten prüfen und diagnostizieren.",url:"https://www.seagate.com/support/downloads/seatools/"},
+
+{n:94,name:"Malwarebytes",icon:"🛡️",cat:"Sicherheit",desc:"Malware-Scanner für Windows.",url:"https://www.malwarebytes.com/mwb-download"},
+
+{n:95,name:"Microsoft Defender",icon:"🛡️",cat:"Sicherheit",desc:"Integrierter Windows-Schutz.",url:"https://www.microsoft.com/windows/comprehensive-security"},
+
+{n:96,name:"Bitwarden",icon:"🔐",cat:"Sicherheit",desc:"Passwortmanager.",url:"https://bitwarden.com/download/"},
+
+{n:97,name:"KeePassXC",icon:"🔑",cat:"Sicherheit",desc:"Open-Source-Passwortmanager.",url:"https://keepassxc.org/download/"},
+
+{n:98,name:"Proton VPN",icon:"🛡️",cat:"Sicherheit",desc:"VPN-Client von Proton.",url:"https://protonvpn.com/download"},
+
+{n:99,name:"Mullvad VPN",icon:"🛡️",cat:"Sicherheit",desc:"VPN mit Fokus auf Privatsphäre.",url:"https://mullvad.net/download/vpn/windows"},
+
+{n:100,name:"7+ Taskbar Tweaker",icon:"🪟",cat:"Windows",desc:"Zusätzliche Einstellungen für die Windows-Taskleiste.",url:"https://rammichael.com/7-taskbar-tweaker"},
+
+{n:101,name:"Microsoft PowerToys Awake",icon:"☕",cat:"Windows",desc:"PC wach halten, ohne Energieoptionen umzuschalten.",url:"https://learn.microsoft.com/windows/powertoys/awake"},
+
+{n:102,name:"Google Drive",icon:"☁️",cat:"Cloud",desc:"Dateien synchronisieren und speichern.",url:"https://www.google.com/drive/download/"},
+
+{n:103,name:"OneDrive",icon:"☁️",cat:"Cloud",desc:"Microsoft-Cloudspeicher und Synchronisation.",url:"https://www.microsoft.com/microsoft-365/onedrive/download"},
+
+{n:104,name:"Dropbox",icon:"☁️",cat:"Cloud",desc:"Cloudspeicher und Dateisynchronisation.",url:"https://www.dropbox.com/install"},
+
+{n:105,name:"7-Zip ZS",icon:"📦",cat:"Tools",desc:"Alternative 7-Zip-Build mit zusätzlicher Kompression.",url:"https://github.com/mcmilk/7-Zip-zstd/releases"},
+
+{n:106,name:"Brave",icon:"🦁",cat:"Browser",desc:"Browser mit integriertem Tracking-Schutz.",url:"https://brave.com/download/"},
+
+{n:107,name:"Google Chrome",icon:"🌐",cat:"Browser",desc:"Webbrowser von Google.",url:"https://www.google.com/chrome/"},
+
+{n:108,name:"Vivaldi",icon:"🌐",cat:"Browser",desc:"Stark anpassbarer Webbrowser.",url:"https://vivaldi.com/download/"},
+
+{n:109,name:"LibreWolf",icon:"🦊",cat:"Browser",desc:"Datenschutzorientierte Firefox-Variante.",url:"https://librewolf.net/installation/"},
+
+{n:110,name:"WinSCP",icon:"📁",cat:"Tools",desc:"Sicherer Dateiübertragungs-Client.",url:"https://winscp.net/eng/download.php"},
+
+{n:111,name:"FileZilla",icon:"📁",cat:"Tools",desc:"FTP/SFTP-Dateiübertragung.",url:"https://filezilla-project.org/download.php"},
+
+{n:112,name:"Everything 1.5 Alpha",icon:"🔎",cat:"Tools",desc:"Neuere Everything-Testversion.",url:"https://www.voidtools.com/forum/"},
+
+{n:113,name:"KeePass",icon:"🔑",cat:"Sicherheit",desc:"Passwortmanager.",url:"https://keepass.info/download.html"},
+
+{n:114,name:"OpenVPN Connect",icon:"🔒",cat:"Sicherheit",desc:"VPN-Client.",url:"https://openvpn.net/client/"},
+
+{n:115,name:"VirtualBox",icon:"📦",cat:"Entwicklung",desc:"Virtuelle Maschinen ausführen.",url:"https://www.virtualbox.org/wiki/Downloads"},
+
+{n:116,name:"VMware Workstation Pro",icon:"🖥️",cat:"Entwicklung",desc:"Virtuelle Maschinen auf dem PC.",url:"https://www.vmware.com/products/desktop-hypervisor/workstation-and-fusion"},
+
+{n:117,name:"WSL",icon:"🐧",cat:"Entwicklung",desc:"Linux-Umgebungen direkt in Windows.",url:"https://learn.microsoft.com/windows/wsl/install"},
+
+{n:118,name:"NanaZip",icon:"📦",cat:"Tools",desc:"Moderne Archiv-App für Windows.",url:"https://github.com/M2Team/NanaZip"},
+
+{n:119,name:"LocalSend",icon:"📲",cat:"Tools",desc:"Dateien schnell und lokal zwischen Geräten übertragen.",url:"https://localsend.org/download"},
+
+{n:120,name:"LocalSend",icon:"📲",cat:"Tools",desc:"Dateien schnell und lokal zwischen Geräten übertragen.",url:"https://localsend.org/download"},
+
+/* #121 */
+{n:121,name:"Amazon Music",icon:"🎵",cat:"Media",desc:"Musik und Podcasts von Amazon.",url:"https://music.amazon.de/"}
+
+];
+
+
+const grid=document.getElementById("grid");
+const filters=document.getElementById("filters");
+const search=document.getElementById("search");
+const stats=document.getElementById("stats");
+const empty=document.getElementById("empty");
+const favToggle=document.getElementById("favToggle");
+
+
+let active="Alle";
+
+
+let favorites=new Set(
+  JSON.parse(
+    localStorage.getItem("myPcAppsFavorites") || "[]"
+  ).map(Number)
+);
+
+
+favToggle.onclick=()=>{
+
+  active =
+    active==="Favoriten"
+      ? "Alle"
+      : "Favoriten";
+
+  document
+    .querySelectorAll(".filter")
+    .forEach(x=>{
+      x.classList.toggle(
+        "active",
+        x.textContent===active
+      );
+    });
+
+  favToggle.classList.toggle(
+    "active",
+    active==="Favoriten"
+  );
+
+  render();
+};
+
+
+function toggleFavorite(id,e){
+
+  e.stopPropagation();
+
+  favorites.has(id)
+    ? favorites.delete(id)
+    : favorites.add(id);
+
+  localStorage.setItem(
+    "myPcAppsFavorites",
+    JSON.stringify([...favorites])
+  );
+
+  render();
+}
+
+
+const cats=[
+  "Alle",
+  ...new Set(apps.map(a=>a.cat))
+];
+
+
+cats.forEach(c=>{
+
+  const b=document.createElement("button");
+
+  b.className =
+    "filter" +
+    (c==="Alle" ? " active" : "");
+
+  b.textContent=c;
+
+  b.onclick=()=>{
+
+    active=c;
+
+    favToggle.classList.remove("active");
+
+    document
+      .querySelectorAll(".filter")
+      .forEach(x=>{
+        x.classList.remove("active");
+      });
+
+    b.classList.add("active");
+
+    render();
+  };
+
+  filters.appendChild(b);
+
+});
+
+
+function render(){
+
+  const q =
+    search.value
+      .toLowerCase()
+      .trim();
+
+  const list=apps.filter(a=>
+
+    (
+      active==="Alle" ||
+
+      (
+        active==="Favoriten"
+          ? favorites.has(a.n)
+          : a.cat===active
+      )
+    )
+
+    &&
+
+    (`${a.name} ${a.cat} ${a.desc}`)
+      .toLowerCase()
+      .includes(q)
+
+  );
+
+
+  grid.innerHTML =
+    list.map(a=>`
+
+      <article class="card">
+
+        <div class="top">
+
+          <span class="icon">
+            ${a.icon}
+          </span>
+
+          <span class="num">
+
+            #${a.n}
+
+            <button
+              class="star"
+              title="Favorit umschalten"
+              aria-label="Favorit umschalten"
+              onclick="toggleFavorite(${a.n}, event)"
+            >
+              ${favorites.has(a.n) ? "⭐" : "☆"}
+            </button>
+
+          </span>
+
+        </div>
+
+
+        <h2>
+          ${a.name}
+        </h2>
+
+
+        <div class="tag">
+          ${a.cat}
+        </div>
+
+
+        <p>
+          ${a.desc}
+        </p>
+
+
+        <a
+          class="btn"
+          href="${a.url}"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Offizieller Download ↗
+        </a>
+
+      </article>
+
+    `).join("");
+
+
+  stats.textContent =
+    `${list.length} von ${apps.length} Apps angezeigt`;
+
+
+  empty.style.display =
+    list.length ? "none" : "block";
+}
+
+
+search.addEventListener(
+  "input",
+  render
+);
+
+
+render();
+
+</script>
+
+</body>
+</html>
